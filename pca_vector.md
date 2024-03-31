@@ -11,7 +11,7 @@
 ![alt pc_vector](pca_vector.jpg)
 
 
-``` python 
+```python 
 dataset_df = pd.read_csv('./data/toydata.csv', index_col=0,encoding='ms932', sep=',',skiprows=0)
 dataset_df.sample(frac=1, random_state=0)
 
@@ -42,7 +42,7 @@ colorlist = ['pink','brown','orange','purple']
 labels = ['PC1','PC2','PC3','PC4']
 # pca.components_で主成分ベクトルを取り出せる
 for vector1,c,l in zip(pca.components_,colorlist,labels):
-	
+	# 以下の[0] [2]は何を意味するか
     ax.arrow(0,0,vector1[0]*4,vector1[2]*4,width=0.05,head_width=0.1,head_length=0.1,length_includes_head=True,color=c)
     ax.annotate(l,xy=(vector1[0]*4,vector1[2]*4),size=16,color = c)
 
