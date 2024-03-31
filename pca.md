@@ -50,5 +50,4 @@ ax.set_title('主成分平面',fontsize=18)
 
 plt.legend(bbox_to_anchor=(1,0), loc='lower right')
 plt.show()
-
 ```
