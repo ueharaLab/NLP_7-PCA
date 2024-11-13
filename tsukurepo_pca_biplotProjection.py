@@ -20,7 +20,7 @@ feature_names = csv_input.iloc[:,4:].columns
 fig, ax = plt.subplots(1,1, figsize=(8,8))
 
 # 主成分分析クラスのインスタンス化(n_components:計算する主成分の数）
-pca = PCA(n_components=212)	
+pca = PCA(n_components=212) 
 pca.fit(dataset)
 transformed = pca.transform(dataset)
 print(transformed)
@@ -46,10 +46,13 @@ sns.scatterplot(x=0, y=1, hue='keyword', palette="hls",data=pca_score_df,s=200,a
 #   。pのノルムが大きいほどAとbは近い
 
 vocab_e = np.eye(len(feature_names))
-A=pca.components_[:2,:].T
+A=pca.components_[:2,:]#.T
+'''
 A_inv = np.linalg.inv(np.dot(A.T,A))
 P = np.dot(np.dot(A,A_inv),A.T)
 p_matrix = np.dot(P,vocab_e)#pの列ベクトルが語彙毎の主成分ベクトル部分空間(PC1,PC2)への射影ベクトルになる
+'''
+p_matrix = np.dot(A,vocab_e)
 
 p_norm = {name:np.linalg.norm(p_matrix[:,i], ord=2) for i,name in enumerate(feature_names) }
 p_norm_sorted = dict(sorted(p_norm.items(), key=lambda x:x[1],reverse=True))
@@ -59,31 +62,23 @@ top_ranked_voc = [name for i,name in enumerate(p_norm_sorted) if i < ranking]
 p_matrix_df = pd.DataFrame(p_matrix,columns=feature_names)
 
 top_vocs = p_matrix_df.loc[:,top_ranked_voc]
+
 top_vocs = top_vocs.T
+print(top_vocs)
+for name,row in top_vocs.iterrows():
+    vals = row.values
+    ax.arrow(0,0,vals[0]*1,vals[1]*1,width=0.001,head_width=0.005,head_length=0.01,length_includes_head=True,color='blue')
+    ax.annotate(name,xy=(vals[0]*1,vals[1]*1),size=16,color = 'black')
+
+'''
 trans_top_vocs = pca.transform(top_vocs.values)
 
 for row,name in zip(trans_top_vocs,top_vocs.index):
-	ax.arrow(0,0,row[0]*1,row[1]*1,width=0.001,head_width=0.005,head_length=0.01,length_includes_head=True,color='blue')
-	ax.annotate(name,xy=(row[0]*1,row[1]*1),size=16,color = 'black')
-	
-    	
-
+    ax.arrow(0,0,row[0]*1,row[1]*1,width=0.001,head_width=0.005,head_length=0.01,length_includes_head=True,color='blue')
+    ax.annotate(name,xy=(row[0]*1,row[1]*1),size=16,color = 'black')
 '''
-pca_vectors=pca.components_.T[:,:2] 
-pca_vec_sqsum = [(pv[0]**2) + (pv[1]**2) for pv in pca_vectors]
-pca_vecs=[]
-for pca_vec, sq_sum, feature in zip(pca_vectors, pca_vec_sqsum, feature_names):
-    	pca_vecs.append([sq_sum,pca_vec[0],pca_vec[1],feature])
-
-pca_vecs_df = pd.DataFrame(pca_vecs,columns=['sq_sum','x','y','name'])
-pca_vecs_df = pca_vecs_df.sort_values('sq_sum', ascending=False)
-
-
-for i,row in pca_vecs_df.iloc[:ranking,:].iterrows():
-	ax.arrow(0,0,row['x']*1,row['y']*1,width=0.001,head_width=0.005,head_length=0.01,length_includes_head=True,color='blue')
-	#ax.quiver(0,0,row['x'],row['y'],angles='xy',scale_units='xy',scale=1)
-	ax.annotate(row['name'],xy=(row['x']*1,row['y']*1),size=16,color = 'black')
-'''		
+    
+     
 contrib_list=np.round(pca.explained_variance_ratio_, decimals=3)
 print(contrib_list)
 ax.set_xlabel('PC1 ({})'.format(contrib_list[0]),fontsize=18)
@@ -91,6 +86,6 @@ ax.set_ylabel('PC2 ({})'.format(contrib_list[1]),fontsize=18)
 plt.show()
 
 
-	
-		
-	
+    
+        
+    
