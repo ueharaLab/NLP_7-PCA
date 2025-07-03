@@ -20,6 +20,7 @@ fig, ax = plt.subplots(1, 1, figsize=(6, 4))
 pca = PCA(n_components=4)	
 pca_iris1=pca.fit(dataset)
 transformed = pca.transform(dataset)
+print(transformed)
 
 
 colors={'シュークリーム':'red','プリン':'green','杏仁豆腐':'blue'}
