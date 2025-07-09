@@ -18,7 +18,7 @@ fig, ax = plt.subplots(1, 1, figsize=(6, 4))
 
 # 主成分分析クラスのインスタンス化(n_components:計算する主成分の数）
 pca = PCA(n_components=4)	
-pca_iris1=pca.fit(dataset)
+pca.fit(dataset)
 transformed = pca.transform(dataset)
 print(transformed)
 

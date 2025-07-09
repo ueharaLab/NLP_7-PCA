@@ -2,7 +2,7 @@
 1. PC1,PC2をx,y軸とする主成分平面上にデータを射影する。  
 2. 以下の変数transformedの列方向は何を意味するか
 3. 寄与率explained_variance_ratio_の要素数はいくつか
-4. バイプロットのベクトル座標は、主成分ベクトル行列の転置で求められる。pca.components_.T
+4. 主成分負荷ベクトルの座標は、主成分ベクトル行列の転置で近似的に求められる（証明略）。pca.components_.T
 ### 演習
 以下のプログラムを修正してPC3,PC4をx,y軸とする主成分平面上にデータをプロットせよ。バイプロットもPC3,PC4の座標をプロットせよ。
 
@@ -21,8 +21,8 @@ cluster = dataset_df.index
 fig, ax = plt.subplots(1, 1, figsize=(6, 4))
 
 pca = PCA(n_components=4)	
-pca_iris1=pca.fit(dataset)
-# pca 空間上にデータを射影。主成分空間は4次元。
+pca.fit(dataset)
+# 主成分空間上にデータを写像。主成分空間は4次元。
 # 主成分得点は4次元だが、PC1,PC2がデータの分散方向を良くとらえているので、その平面上にプロットする、
 transformed = pca.transform(dataset)
 
@@ -35,7 +35,7 @@ ax.scatter(prin[:,0],prin[:,1], c=colors['プリン'],s=100,alpha=0.5,label='プ
 anin = transformed[cluster=='杏仁豆腐']
 ax.scatter(anin[:,0],anin[:,1], c=colors['杏仁豆腐'],s=100,alpha=0.5,label='杏仁豆腐')
 '''
-pca_vectors=pca.components_.T #バイプロット
+pca_vectors=pca.components_.T #主成分負荷ベクトル
 clist = ['pink','brown','orange','purple']
 for i,(vector,feature_name) in enumerate(zip(pca_vectors,feature_names)):
 	ax.arrow(0,0,vector[0]*4,vector[1]*4,width=0.05,head_width=0.1,head_length=0.1,length_includes_head=True,color=clist[i])
