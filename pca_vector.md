@@ -39,7 +39,7 @@ ax.set_ylabel(feature_names[2],fontsize=14)
 pca = PCA(n_components=4)#主成分分析の準備 n_components : 主成分ベクトルをいくつ検出するかを表すパラメータ
 pca.fit(dataset)# 主成分ベクトルを計算　スライドp.15
 colorlist = ['pink','brown','orange','purple']
-labels = ['PC1','PC2','PC3','PC4']
+labels = ['PCv1','PCv2','PCv3','PCv4']
 # pca.components_で主成分ベクトルを取り出せる
 for vector1,c,l in zip(pca.components_,colorlist,labels):
 	# 以下の[0] [2]は何を意味するか

@@ -33,10 +33,10 @@ ax.set_ylabel(feature_names[2],fontsize=14)
 pca = PCA(n_components=4)
 pca.fit(dataset)
 
-pca_vectors = pd.DataFrame(pca.components_,index=['PC1','PC2','PC3','PC4'],columns=feature_names)
+pca_vectors = pd.DataFrame(pca.components_,index=['PCv1','PCv2','PCv3','PCv4'],columns=feature_names)
 print(pca_vectors)
 colorlist = ['pink','brown','orange','purple']
-labels = ['PC1','PC2','PC3','PC4']
+labels = ['PC1v','PCv2','PCv3','PCv4']
 for vector1,c,l in zip(pca.components_,colorlist,labels):
 	
     ax.arrow(0,0,vector1[0]*4,vector1[2]*4,width=0.05,head_width=0.1,head_length=0.1,length_includes_head=True,color=c)
